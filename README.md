@@ -43,6 +43,9 @@ Also `b64-decode` is slower than `base64-decode-string`...😱
 (base64-decode-string "8J+klA==")
 ;; => "\360\237\244\224"
 
+(string-as-multibyte (base64-decode-string "8J+klA=="))
+;; => "🤔"
+
 (b64-encode "🤔")
 ;; => "8J+klA=="
 
