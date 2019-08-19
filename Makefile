@@ -4,7 +4,7 @@ EMACS ?= emacs
 all: go-base64.so
 
 go-base64.so: main.go init.c
-	go build -buildmode=c-shared -o $@
+	$(GO) build -buildmode=c-shared -o $@
 
 clean:
 	rm -f go-base64.so go-base64.h
