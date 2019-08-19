@@ -5,29 +5,28 @@ package main
 #include <stdlib.h>
 #include <string.h>
 
-static bool
+static inline bool
 copy_string_contents (emacs_env * env, emacs_value value, char *buf, ptrdiff_t *size)
 {
         return env->copy_string_contents (env, value, buf, size);
 }
 
-static emacs_value
+static inline emacs_value
 make_string (emacs_env * env, const char *s)
 {
         return env->make_string (env, s, strlen(s));
 }
 
-static emacs_value
-return_nil (emacs_env * env)
-{
-        return env->intern (env, "nil");
+static inline emacs_value
+intern(emacs_env *env, const char* name) {
+        return env->intern (env, name);
 }
 */
 import "C"
 import (
+	"encoding/base64"
 	"reflect"
 	"unsafe"
-	"encoding/base64"
 )
 
 //export Fb64_encode
@@ -41,11 +40,11 @@ func Fb64_encode(env *C.emacs_env, nargs C.ptrdiff_t, args *C.emacs_value) C.ema
 	var size C.ptrdiff_t = 0
 	var buf *C.char
 
-	C.copy_string_contents (env, lisp_str, buf, &size)
+	C.copy_string_contents(env, lisp_str, buf, &size)
 	buf = (*C.char)(C.malloc(C.size_t(size)))
 	defer C.free(unsafe.Pointer(buf))
-	C.copy_string_contents (env, lisp_str, buf, &size)
-	
+	C.copy_string_contents(env, lisp_str, buf, &size)
+
 	data := C.GoString(buf)
 	encoded := base64.StdEncoding.EncodeToString([]byte(data))
 
@@ -66,22 +65,23 @@ func Fb64_decode(env *C.emacs_env, nargs C.ptrdiff_t, args *C.emacs_value) C.ema
 	var size C.ptrdiff_t = 0
 	var buf *C.char
 
-	C.copy_string_contents (env, lisp_str, buf, &size)
+	C.copy_string_contents(env, lisp_str, buf, &size)
 	buf = (*C.char)(C.malloc(C.size_t(size)))
 	defer C.free(unsafe.Pointer(buf))
-	C.copy_string_contents (env, lisp_str, buf, &size)
+	C.copy_string_contents(env, lisp_str, buf, &size)
 
 	data := C.GoString(buf)
 	decoded, err := base64.StdEncoding.DecodeString(data)
 	if err != nil {
-		return C.return_nil(env);
+		cnil := C.CString("nil")
+		defer C.free(unsafe.Pointer(cnil))
+		return C.intern(env, cnil)
 	}
-	
+
 	cdecoded := C.CString(string(decoded))
 	defer C.free(unsafe.Pointer(cdecoded))
 
 	return C.make_string(env, cdecoded)
 }
-
 
 func main() {}
