@@ -1,5 +1,6 @@
 GO ?= go
 EMACS ?= emacs
+CASK ?= cask
 
 all: go-base64.so
 
@@ -10,7 +11,4 @@ clean:
 	rm -f go-base64.so go-base64.h
 
 test: go-base64.so
-	$(EMACS) -Q --batch -L . -l go-base64 --eval \
-	'(progn \
-	   (message (b64-encode "hello")) \
-	   (message (b64-decode "aGVsbG8=")))'
+	$(CASK) exec ert-runner
