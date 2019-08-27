@@ -1,6 +1,6 @@
 # emacs-module-go-base64
 
-This package provides `b64-encode` and `b64-decode` functions that use go base64 library.
+This package provides `go-base64-encode` and `go-base64-decode` functions that use go base64 library.
 
 This requires emacs built with `--with-modules`.
 
@@ -19,19 +19,19 @@ and
 ```emacs-lisp
 (require 'go-base64)
 
-(b64-encode "hello")
+(go-base64-encode "hello")
 ;; => "aGVsbG8="
 
-(b64-decode "aGVsbG8=")
+(go-base64-decode "aGVsbG8=")
 ;; => "hello"
 ```
 
 ## note
-`b64-encode` is slower than `base64-encode-string`...🤯
+`go-base64-encode` is slower than `base64-encode-string`...🤯
 
-Also `b64-decode` is slower than `base64-decode-string`...😱
+Also `go-base64-decode` is slower than `base64-decode-string`...😱
 
-`b64-encode` and `b64-decode` allow multibyte characters🤗
+`go-base64-encode` and `go-base64-decode` allow multibyte characters🤗
 
 ```emacs-lisp
 (base64-encode-string "🤔")
@@ -46,9 +46,9 @@ Also `b64-decode` is slower than `base64-decode-string`...😱
 (string-as-multibyte (base64-decode-string "8J+klA=="))
 ;; => "🤔"
 
-(b64-encode "🤔")
+(go-base64-encode "🤔")
 ;; => "8J+klA=="
 
-(b64-decode "8J+klA==")
+(go-base64-decode "8J+klA==")
 ;; => "🤔"
 ```

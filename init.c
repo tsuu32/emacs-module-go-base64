@@ -36,8 +36,8 @@ emacs_module_init (struct emacs_runtime *ert)
 #define DEFUN(lsym, csym, amin, amax, doc, data)                        \
         bind_function (env, lsym,                                       \
                        env->make_function(env, amin, amax, csym, doc, data))
-        DEFUN ("b64-encode", Fb64_encode, 1, 1, "Return base64 encoded string.", NULL);
-        DEFUN ("b64-decode", Fb64_decode, 1, 1, "Return base64 decoded string.", NULL);
+        DEFUN ("go-base64-encode", Fb64_encode, 1, 1, "Return base64 encoded string.", NULL);
+        DEFUN ("go-base64-decode", Fb64_decode, 1, 1, "Return base64 decoded string.", NULL);
 #undef DEFUN
         
         provide (env, "go-base64");
